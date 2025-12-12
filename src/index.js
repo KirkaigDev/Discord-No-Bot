@@ -1,10 +1,8 @@
-const { SPAM_CHANNEL_ID } = require("../config.json");
+const { GUILD_ID } = require("../config.json");
 require("dotenv").config();
-const pool = require("./db");
-const fs = require("fs");
+const { Client, IntentsBitField } = require("discord.js");
+const { CommandHandler } = require("djs-commander");
 const path = require("path");
-const { Client, IntentsBitField, Collection } = require("discord.js");
-const eventHandler = require("./handler/eventHandler");
 
 const client = new Client({
   intents: [
@@ -15,47 +13,11 @@ const client = new Client({
   ],
 });
 
-eventHandler(client);
-
-// no counter
-client.on("messageCreate", async (msg) => {
-  if (msg.author.bot) return;
-
-  const word = "no";
-  // remove whitespace and caps
-  const normalised = msg.content.toLowerCase().replace(/\s+/g, "");
-  const re = new RegExp(word, "g");
-  const count = (normalised.match(re) ?? []).length;
-
-  // sql variables
-  const guildID = msg.guildId;
-  const userID = msg.author.id;
-  const username = msg.author.username;
-
-  if (count == 0) return;
-
-  // Add no count to the user's score
-  try {
-    await pool.query(
-      `
-    INSERT INTO userPoints(guildID, userID, username, points)
-    VALUES (?, ?, ?, ?)
-    ON DUPLICATE KEY UPDATE
-    points = points + VALUES(points),
-    username = VALUES(username)`,
-      [guildID, userID, username, count]
-    );
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Stop spam clogging up bot messages
-  if (msg.channelId == SPAM_CHANNEL_ID) return;
-
-  msg.reply({
-    content: `no x${count}`,
-    allowedMentions: { repliedUser: false },
-  });
+new CommandHandler({
+  client,
+  commandsPath: path.join(__dirname, "commands"),
+  eventsPath: path.join(__dirname, "events"),
+  testServer: GUILD_ID,
 });
 
 client.login(process.env.TOKEN);

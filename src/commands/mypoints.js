@@ -1,10 +1,12 @@
-const pool = require("../../db");
+const pool = require("../db");
 
 module.exports = {
-  name: "mypoints",
-  description: "Check your points.",
+  data: {
+    name: "mypoints",
+    description: "Check your points.",
+  },
 
-  callback: async (client, interaction) => {
+  run: async ({ client, interaction }) => {
     if (interaction.commandName != "mypoints") return;
 
     try {

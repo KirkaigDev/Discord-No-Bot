@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.25.1",
+    "djs-commander": "^0.0.50",
     "dotenv": "^17.2.3",
     "mysql2": "^3.15.3",
     "nodemon": "^3.1.11"

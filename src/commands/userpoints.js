@@ -1,19 +1,20 @@
-const pool = require("../../db");
-const { callback } = require("./leaderboard");
+const pool = require("../db");
 
 module.exports = {
-  name: "userpoints",
-  description: "Check a user's points.",
-  options: [
-    {
-      name: "user",
-      description: "The user to check points for.",
-      type: 6,
-      required: true,
-    },
-  ],
+  data: {
+    name: "userpoints",
+    description: "Check a user's points.",
+    options: [
+      {
+        name: "user",
+        description: "The user to check points for.",
+        type: 6,
+        required: true,
+      },
+    ],
+  },
 
-  callback: async (client, interaction) => {
+  run: async ({ client, interaction }) => {
     if (interaction.commandName != "userpoints") return;
 
     try {
