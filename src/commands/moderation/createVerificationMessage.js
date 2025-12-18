@@ -17,7 +17,14 @@ module.exports = {
     }
 
     try {
+<<<<<<< HEAD
       const roles = [{ id: "1409638286233960600", label: '"No"' }];
+=======
+      // list of role IDs
+      const negator = "1409638286233960600";
+
+      const roles = [{ id: negator, label: '"No"' }];
+>>>>>>> 97e2e4d (Added in a verification command)
       const channel = await client.channels.cache.get(interaction.channelId);
 
       const row = new ActionRowBuilder();
